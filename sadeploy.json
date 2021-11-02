@@ -25,7 +25,7 @@
 			{
         		"name": "Standard_LRS"
             },
-            "kind": "StorageV1",
+            "kind": "StorageV2",
             "properties": 
 			{
                 "largeFileSharesState": "Enabled"
