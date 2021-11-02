@@ -11,7 +11,7 @@
     	"Location": 
 		{
         	"type": "string",
-        	"defaultValue": "japanwest"
+        	"defaultValue": "centralindia"
     	}
 	},
   "resources": 
