@@ -1,0 +1,53 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "StorageAcctName": {
+            "type": "String",
+            "defaultValue": "pksdev"
+        },
+        "Location": {
+            "allowedValues": [
+                "japaneast",
+                "japanwest",
+                "southeastasia"
+            ],
+            "type": "String",
+            "defaultValue": "japaneast"
+        },
+        "NumberOfStorageAccounts": {
+            "maxValue": 5,
+            "type": "Int"
+        },
+        "UseLargeFileShares": {
+            "type": "String",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        }
+    },
+    "variables": {
+        "StorageAccountName": "[concat(parameters('StorageAcctName'),'sj')]"
+    },
+    "resources": [
+        {
+            "condition": "[and(equals(parameters('UseLargeFileShares'),'Yes'), greaterOrEquals(parameters('NumberOfStorageAccounts'),2))]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('StorageAccountName'), copyIndex())]",
+            "location": "[parameters('Location')]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "largeFileSharesState": "Enabled"
+            },
+            "copy": {
+                "name": "createmultipleaccounts",
+                "count": "[parameters('NumberOfStorageAccounts')]"
+            }
+        }
+    ]
+}
